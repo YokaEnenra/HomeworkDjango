@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from student.models import Person
 
+
 def home_page(request):
     return HttpResponse("Hello World!")
 
