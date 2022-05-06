@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from student.views import home_page, general_page, bonus_page, welcome_page, get_email_verification, \
-    get_reset_password
+    get_reset_password, persons_json
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +25,8 @@ urlpatterns = [
     path('home', home_page),
     path('home/easter', bonus_page),
     path('reg', welcome_page),
-    path('verify_emil', get_email_verification),
+    path('verify_email', get_email_verification),
     path('reset_pass', get_reset_password),
+    path('home/easter', bonus_page),
+    path('persons', persons_json)
 ]

@@ -1,8 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 from django.shortcuts import render
-
+from student.models import Person
 
 def home_page(request):
     return HttpResponse("Hello World!")
@@ -26,3 +26,8 @@ def get_reset_password(request):
 
 def welcome_page(request):
     return render(request, "welcome_email.html")
+
+
+def persons_json(request):
+    persons = Person.objects.all()
+    return JsonResponse({'hey fellows': persons})
