@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from student.views import home_page, general_page, bonus_page, welcome_page, get_email_verification, \
+from student.views import home_page, bonus_page, welcome_page, get_email_verification, \
     get_reset_password, Students, NewPerson, NewSubject, StudentDetail, PersonUpdate, Teachers, SubjectDetail, \
     SubjectUpdate, Subjects, SendEmail
 
