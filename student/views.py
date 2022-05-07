@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 
 # Create your views here.
 from django.shortcuts import render
@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
 
-from student.forms import PersonForm, SubjectForm
 from student.models import Person, Subject
 
 
