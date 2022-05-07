@@ -4,6 +4,8 @@ from django.db.models import Model, CharField, PositiveIntegerField, DateTimeFie
 class Person(Model):
     first_name = CharField(max_length=30)
     last_name = CharField(max_length=30)
+    social_url = CharField(max_length=100, blank=True)
+    email = CharField(max_length=100, blank=True)
     age = PositiveIntegerField()
     STUDENT = 'STD'
     TEACHER = 'TCH'
