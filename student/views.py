@@ -1,11 +1,13 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
 
+from student.email import send
+from student.forms import MessageForm
 from student.models import Person, Subject
 
 
@@ -90,3 +92,22 @@ class SubjectUpdate(UpdateView):
     template_name = "subject_edit.html"
     fields = ['name', 'teacher']
     success_url = reverse_lazy('home')
+
+
+class SendEmail(View):
+    def get(self, request):
+        return render(request, "choose_email.html", context={'form': MessageForm})
+
+    def post(self, request):
+
+        send(
+            subject=request.POST.get("subject"),
+            message=request.POST.get("message"),
+            to_email=request.POST.get("to_email"),
+            template_name='send_email.html',
+            context={
+                'subject': request.POST.get("subject"),
+                'message': request.POST.get("message")
+            }
+        )
+        return redirect(reverse_lazy('home'))

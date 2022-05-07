@@ -11,3 +11,10 @@ class PersonForm(forms.Form):
 class SubjectForm(forms.Form):
     subject_name = forms.CharField(max_length=30)
     teacher = forms.IntegerField()
+
+
+class MessageForm(forms.Form):
+    subject = forms.CharField()
+    message = forms.CharField()
+    to_email = forms.CharField()
+

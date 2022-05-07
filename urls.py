@@ -18,12 +18,12 @@ from django.urls import path
 
 from student.views import home_page, general_page, bonus_page, welcome_page, get_email_verification, \
     get_reset_password, Students, NewPerson, NewSubject, StudentDetail, PersonUpdate, Teachers, SubjectDetail, \
-    SubjectUpdate, Subjects
+    SubjectUpdate, Subjects, SendEmail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', general_page),
-    path('home', home_page, name='home'),
+    # path('', general_page),
+    path('', home_page, name='home'),
     path('home/easter', bonus_page),
     path('reg', welcome_page),
     path('verify_email', get_email_verification),
@@ -37,5 +37,6 @@ urlpatterns = [
     path('subjects', Subjects.as_view(), name='subjects_list'),
     path('subject/create', NewSubject.as_view(), name='create_subject'),
     path('subject/detail/<int:pk>', SubjectDetail.as_view(), name='subject_details'),
-    path('subject/update/<int:pk>', SubjectUpdate.as_view(), name='subject_update')
+    path('subject/update/<int:pk>', SubjectUpdate.as_view(), name='subject_update'),
+    path('send_mail', SendEmail.as_view())
 ]
