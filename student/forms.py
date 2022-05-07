@@ -17,4 +17,3 @@ class MessageForm(forms.Form):
     subject = forms.CharField()
     message = forms.CharField()
     to_email = forms.CharField()
-
