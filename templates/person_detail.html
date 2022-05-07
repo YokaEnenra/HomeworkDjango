@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %} Person Info Page {% endblock %}
+
+{% block content %}
+    <ul>
+        <li>
+            Person DataBase ID: {{ person.id }}
+        </li>
+        <li>
+             First Name: {{ person.first_name }}
+        </li>
+        <li>
+            Last Name: {{ person.last_name }}
+        </li>
+        <li>
+            Person's age: {{ person.age }}
+        </li>
+        <li>
+            Species: {{ person.get_person_type_display }}
+        </li>
+        <li>
+            Is active account: {{ person.active_acc }}
+        </li>
+        <li>
+            Created: {{ person.creation_time }}
+        </li>
+        <li>
+            Last update: {{ person.update_time }}
+        </li>
+    </ul>
+    <a href="{% url 'person_update' pk=person.id %}">Edit person</a>
+{% endblock %}

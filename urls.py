@@ -17,16 +17,25 @@ from django.contrib import admin
 from django.urls import path
 
 from student.views import home_page, general_page, bonus_page, welcome_page, get_email_verification, \
-    get_reset_password, persons_json
+    get_reset_password, Students, NewPerson, NewSubject, StudentDetail, PersonUpdate, Teachers, SubjectDetail, \
+    SubjectUpdate, Subjects
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', general_page),
-    path('home', home_page),
+    path('home', home_page, name='home'),
     path('home/easter', bonus_page),
     path('reg', welcome_page),
     path('verify_email', get_email_verification),
     path('reset_pass', get_reset_password),
     path('home/easter', bonus_page),
-    path('persons', persons_json)
+    path('students', Students.as_view(), name='students_list'),
+    path('teachers', Teachers.as_view(), name='teachers_list'),
+    path('person/create', NewPerson.as_view(), name='create_person'),
+    path('person/detail/<int:pk>', StudentDetail.as_view(), name='person_detail'),
+    path('person/update/<int:pk>', PersonUpdate.as_view(), name='person_update'),
+    path('subjects', Subjects.as_view(), name='subjects_list'),
+    path('subject/create', NewSubject.as_view(), name='create_subject'),
+    path('subject/detail/<int:pk>', SubjectDetail.as_view(), name='subject_details'),
+    path('subject/update/<int:pk>', SubjectUpdate.as_view(), name='subject_update')
 ]

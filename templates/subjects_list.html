@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %} Subjects Page {% endblock %}
+
+{% block content %}
+    <ul>
+        {% for subject in object_list %}
+            <li>
+                <a href="{% url 'subject_details' pk=subject.id%}">{{ subject.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
