@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %} Subject Info Page {% endblock %}
+
+{% block content %}
+    <ul>
+        <li>
+            Subject DataBase ID: {{ subject.id }}
+        </li>
+        <li>
+             Subject Name: {{ subject.name }}
+        </li>
+        <li>
+            Subject Teacher ID: {{ subject.teacher }}
+        </li>
+        <li>
+            Created: {{ subject.creation_time }}
+        </li>
+        <li>
+            Last update: {{ subject.update_time }}
+        </li>
+    </ul>
+    <a href="{% url 'subject_update' pk=subject.id %}">Edit subject</a>
+{% endblock %}
