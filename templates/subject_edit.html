@@ -6,6 +6,6 @@
     <form action="{% url 'subject_update' pk=subject.id  %}" method="POST">
     {% csrf_token %}
     {{ form }}
-    <input type ="submit">
+    <input type ="submit" value="Save">
     </form>
 {% endblock %}
