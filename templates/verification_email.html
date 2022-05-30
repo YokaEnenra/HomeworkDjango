@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %} Verification email {% endblock %}
+
+{% block content %}
+    <h1>{{ subject }}</h1>
+    <p>Click following link, to activate your account.<br>
+        {{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ link }}</p>
+{% endblock %}

@@ -18,7 +18,7 @@ from django.urls import path
 
 from student.views import home_page, bonus_page, welcome_page, get_email_verification, \
     get_reset_password, Students, NewPerson, NewSubject, StudentDetail, PersonUpdate, Teachers, SubjectDetail, \
-    SubjectUpdate, Subjects, SendEmail, signin, signout
+    SubjectUpdate, Subjects, SendEmail, signin, signout, signup, verify_account
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,4 +41,7 @@ urlpatterns = [
     path('send_mail', SendEmail.as_view()),
     path('login', signin, name='login'),
     path('logout', signout, name='logout'),
+    path('register/<str:error_message>', signup, name='register_with_error'),
+    path('register', signup, name='register'),
+    path('verify/<str:uid>/<str:token>', verify_account, name='verify_account')
 ]

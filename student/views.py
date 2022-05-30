@@ -1,15 +1,18 @@
-from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth import authenticate, logout, login, get_user_model
+from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse
-
-# Create your views here.
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
 
 from student.email import send
 from student.forms import MessageForm
 from student.models import Person, Subject
+
+USER_MODEL = get_user_model()
 
 
 def home_page(request):
@@ -125,7 +128,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponse(f"Hello {user.username}")
+            return HttpResponse(f"Hello, {user.username}!")
         else:
             return HttpResponse("Invalid username or password, pls check your input or contact our TechSupport")
 
@@ -133,3 +136,47 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect(reverse_lazy('login'))
+
+
+def signup(request, error_message=None):
+    if request.method == "GET":
+        return render(request, "register.html", context={'error_message': error_message})
+    elif request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        if USER_MODEL.objects.filter(username=username).exists():
+            return redirect(reverse_lazy('register_with_error', kwargs={
+                'error_message': 'Username already exists'}))
+        if USER_MODEL.objects.filter(email=email).exists():
+            return redirect(reverse_lazy('register_with_error', kwargs={
+                'error_message': 'User with that email already exists'}))
+        user = USER_MODEL.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            is_active=False)
+        send(subject='Verification Email',
+             to_email=user.email,
+             template_name='verification_email.html',
+             context={'subject': f'Hi, {user.username}.',
+                      'link': reverse_lazy('verify_account', kwargs={
+                          'uid': urlsafe_base64_encode(force_bytes(user.id)),
+                          'token': default_token_generator.make_token(user)}),
+                      'request': request})
+        return HttpResponse(f"Hello, {user.username}. Your account successfully "
+                            f"created, now you need to activate it, "
+                            f"via activation letter, that is send to your email")
+
+
+def verify_account(request, uid, token):
+    try:
+        user = USER_MODEL.objects.get(id=urlsafe_base64_decode(uid))
+    except (TypeError, ValueError, OverflowError, USER_MODEL.DoesNotExist):
+        user = None
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return HttpResponse(f"Hello, {user.username}!")
+    return HttpResponse(f'Invalid token, try again or contact our TechSupport')
