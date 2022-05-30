@@ -165,8 +165,8 @@ def signup(request, error_message=None):
                           'token': default_token_generator.make_token(user)}),
                       'request': request})
         return HttpResponse(f"Hello, {user.username}. Your account successfully "
-                            f"created, now you need to activate it, "
-                            f"via activation letter, that is send to your email")
+                            "created, now you need to activate it, "
+                            "via activation letter, that is send to your email")
 
 
 def verify_account(request, uid, token):
@@ -179,4 +179,4 @@ def verify_account(request, uid, token):
         user.save()
         login(request, user)
         return HttpResponse(f"Hello, {user.username}!")
-    return HttpResponse(f'Invalid token, try again or contact our TechSupport')
+    return HttpResponse('Invalid token, try again or contact our TechSupport')
