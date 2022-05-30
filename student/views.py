@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, logout, login
 from django.http import HttpResponse
 
 # Create your views here.
@@ -37,10 +38,13 @@ def welcome_page(request):
 
 class Students(View):
     def get(self, request):
-        persons = Person.objects.all().filter(person_type='STD')
-        return render(request, "persons_list.html", context={
-            "persons": persons,
-        })
+        if request.user.is_authenticated:
+            persons = Person.objects.all().filter(person_type='STD')
+            return render(request, "persons_list.html", context={
+                "persons": persons,
+            })
+        else:
+            return HttpResponse("You are not logged in")
 
 
 class StudentDetail(DetailView):
@@ -99,7 +103,6 @@ class SendEmail(View):
         return render(request, "choose_email.html", context={'form': MessageForm})
 
     def post(self, request):
-
         send(
             subject=request.POST.get("subject"),
             message=request.POST.get("message"),
@@ -111,3 +114,22 @@ class SendEmail(View):
             }
         )
         return redirect(reverse_lazy('home'))
+
+
+def signin(request):
+    if request.method == "GET":
+        return render(request, "login.html")
+    elif request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponse(f"Hello {user.username}")
+        else:
+            return HttpResponse("Invalid username or password, pls check your input or contact our TechSupport")
+
+
+def signout(request):
+    logout(request)
+    return redirect(reverse_lazy('login'))
