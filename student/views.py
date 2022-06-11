@@ -7,10 +7,13 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
+from rest_framework import viewsets, permissions
 
 from student.email import send
 from student.forms import MessageForm
-from student.models import Person, Subject
+from student.models import Person, Subject, Group
+from student.serializers import PersonSerializer, GroupSerializer, SubjectSerializer, PersonRetrieveSerializer, \
+    GroupRetrieveSerializer, SubjectRetrieveSerializer
 
 USER_MODEL = get_user_model()
 
@@ -180,3 +183,45 @@ def verify_account(request, uid, token):
         login(request, user)
         return HttpResponse(f"Hello, {user.username}!")
     return HttpResponse('Invalid token, try again or contact our TechSupport')
+
+
+class PersonViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Person.objects.all().order_by('-date_joined')
+    serializer_class = PersonSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return PersonRetrieveSerializer
+        return PersonSerializer
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return GroupRetrieveSerializer
+        return GroupSerializer
+
+
+class SubjectViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows subjects to be viewed or edited.
+    """
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return SubjectRetrieveSerializer
+        return SubjectSerializer
