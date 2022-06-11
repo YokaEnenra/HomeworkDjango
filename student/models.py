@@ -1,4 +1,5 @@
-from django.db.models import Model, CharField, PositiveIntegerField, DateTimeField, BooleanField, IntegerField
+from django.db.models import Model, CharField, PositiveIntegerField, DateTimeField, BooleanField, \
+    OneToOneField, ForeignKey, ManyToManyField, RESTRICT
 
 
 class Person(Model):
@@ -14,6 +15,8 @@ class Person(Model):
         (TEACHER, 'Teacher'),
     ]
     person_type = CharField(max_length=3, choices=PERSON_TYPE_CHOICES, default=STUDENT)
+    # Many persons to one group
+    student_group = ForeignKey('Group', on_delete=RESTRICT, null=True)
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)
     active_acc = BooleanField(default=True)
@@ -21,34 +24,35 @@ class Person(Model):
 
 class Group(Model):
     name = CharField(max_length=4, default=None)
-    students = IntegerField()
-    headman = IntegerField()
+    headman = OneToOneField('Person', on_delete=RESTRICT, null=True)
     edu_program = CharField(max_length=100)
+    # Many groups to one course
+    course = ForeignKey('Course', on_delete=RESTRICT, null=True)
+    subjects = ManyToManyField('Subject', null=True)
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)
 
 
 class Subject(Model):
     name = CharField(max_length=30, default=None)
-    teacher = IntegerField()
+    courses = ManyToManyField('Course', null=True)
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)
 
 
 class Course(Model):
     name = CharField(max_length=50, default=None)
-    headman = IntegerField()
-    curator = IntegerField()
-    subjects = IntegerField()
-    groups = IntegerField()
+    curator = OneToOneField('Person', on_delete=RESTRICT, null=True)
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)
 
 
 class Lesson(Model):
-    subject = IntegerField()
-    teacher = IntegerField()
+    # Many lessons to one subject
+    subject = ForeignKey('Subject', on_delete=RESTRICT, null=True)
+    teacher = OneToOneField('Person', on_delete=RESTRICT, null=True)
     theme = CharField(max_length=100)
-    groups = IntegerField()
+    groups = ManyToManyField('Group', null=True)
+    date_of_lesson = DateTimeField(null=True)
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)
