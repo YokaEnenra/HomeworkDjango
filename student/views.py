@@ -189,7 +189,7 @@ class PersonViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Person.objects.all().order_by('-date_joined')
+    queryset = Person.objects.all().order_by('-creation_time')
     serializer_class = PersonSerializer
     permission_classes = [permissions.IsAuthenticated]
 
