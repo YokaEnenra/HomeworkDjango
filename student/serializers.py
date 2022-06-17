@@ -6,7 +6,7 @@ from student.models import Group, Subject, Person
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Person
-        fields = ['url', 'first_name', 'last_name', 'email', 'person_type']
+        fields = ['url', 'first_name', 'last_name', 'email', 'person_type', 'age']
 
 
 class PersonRetrieveSerializer(serializers.HyperlinkedModelSerializer):
