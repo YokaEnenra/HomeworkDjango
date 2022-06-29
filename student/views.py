@@ -7,11 +7,14 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from student.email import send
 from student.forms import MessageForm
 from student.models import Person, Subject, Group
+from student.pagination import CustomSubjectPagination
 from student.serializers import PersonSerializer, GroupSerializer, SubjectSerializer, PersonRetrieveSerializer, \
     GroupRetrieveSerializer, SubjectRetrieveSerializer
 
@@ -192,6 +195,11 @@ class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all().order_by('-creation_time')
     serializer_class = PersonSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    ordering_fields = ['active_acc', 'person_type', 'age', 'last_name', 'student_group_id']
+    ordering = ['person_type']
+    search_fields = ['first_name', 'last_name', 'email']
+    filterset_fields = ['active_acc', 'person_type', 'student_group_id']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -206,6 +214,11 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    ordering_fields = ['edu_program', 'creation_time', 'name', 'course_id']
+    ordering = ['edu_program']
+    search_fields = ['name']
+    filterset_fields = ['edu_program', 'course_id']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -220,6 +233,11 @@ class SubjectViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = CustomSubjectPagination
+    filter_backends = [SearchFilter, OrderingFilter]
+    ordering_fields = ['name']
+    ordering = ['name']
+    search_fields = ['name']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
