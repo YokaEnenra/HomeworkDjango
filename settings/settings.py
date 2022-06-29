@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'django_filters',
+    'crispy_forms',
     #
     'student.apps.StudentConfig',
 ]
