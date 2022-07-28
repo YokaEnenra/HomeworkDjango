@@ -22,12 +22,14 @@ from drf_yasg import openapi
 from student.views import home_page, bonus_page, welcome_page, get_email_verification, \
     get_reset_password, Students, NewPerson, NewSubject, StudentDetail, PersonUpdate, Teachers, SubjectDetail, \
     SubjectUpdate, Subjects, SendEmail, signin, signout, signup, verify_account, GroupViewSet, PersonViewSet, \
-    SubjectViewSet
+    SubjectViewSet, CourseViewSet, LessonViewSet
 
 router = routers.DefaultRouter()
-router.register(r'persons', PersonViewSet)
-router.register(r'groups', GroupViewSet)
-router.register(r'subjects', SubjectViewSet)
+router.register(r'persons', PersonViewSet, basename='person')
+router.register(r'groups', GroupViewSet, basename='group')
+router.register(r'subjects', SubjectViewSet, basename='subject')
+router.register(r'courses', CourseViewSet, basename='course')
+router.register(r'lessons', LessonViewSet, basename='lesson')
 
 
 schema_view = get_schema_view(
