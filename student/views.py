@@ -13,10 +13,11 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 
 from student.email import send
 from student.forms import MessageForm
-from student.models import Person, Subject, Group
+from student.models import Person, Subject, Group, Course, Lesson
 from student.pagination import CustomSubjectPagination
 from student.serializers import PersonSerializer, GroupSerializer, SubjectSerializer, PersonRetrieveSerializer, \
-    GroupRetrieveSerializer, SubjectRetrieveSerializer
+    GroupRetrieveSerializer, SubjectRetrieveSerializer, CourseSerializer, CourseRetrieveSerializer, LessonSerializer, \
+    LessonRetrieveSerializer
 
 USER_MODEL = get_user_model()
 
@@ -243,3 +244,31 @@ class SubjectViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return SubjectRetrieveSerializer
         return SubjectSerializer
+
+
+class CourseViewSet(viewsets.ModelViewSet):
+    """
+       API endpoint that allows courses to be viewed or edited.
+    """
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return CourseRetrieveSerializer
+        return CourseSerializer
+
+
+class LessonViewSet(viewsets.ModelViewSet):
+    """
+       API endpoint that allows courses to be viewed or edited.
+    """
+    queryset = Lesson.objects.all()
+    serializer_class = LessonSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return LessonRetrieveSerializer
+        return LessonSerializer
