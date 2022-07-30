@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.template.defaulttags import url
 from django.urls import path, include, re_path
 from rest_framework import routers, permissions
 from drf_yasg.views import get_schema_view
@@ -22,7 +23,7 @@ from drf_yasg import openapi
 from student.views import home_page, bonus_page, welcome_page, get_email_verification, \
     get_reset_password, Students, NewPerson, NewSubject, StudentDetail, PersonUpdate, Teachers, SubjectDetail, \
     SubjectUpdate, Subjects, SendEmail, signin, signout, signup, verify_account, GroupViewSet, PersonViewSet, \
-    SubjectViewSet, CourseViewSet, LessonViewSet, RangedIntegerField
+    SubjectViewSet, CourseViewSet, LessonViewSet
 
 router = routers.DefaultRouter()
 router.register(r'persons', PersonViewSet, basename='person')
@@ -78,5 +79,5 @@ urlpatterns = [
     path('register/<str:error_message>', signup, name='register_with_error'),
     path('register', signup, name='register'),
     path('verify/<str:uid>/<str:token>', verify_account, name='verify_account'),
-    path('tests', RangedIntegerField)
+    url(r'^ht/', include('health_check.urls')),
 ]
