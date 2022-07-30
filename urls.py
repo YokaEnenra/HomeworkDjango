@@ -22,7 +22,7 @@ from drf_yasg import openapi
 from student.views import home_page, bonus_page, welcome_page, get_email_verification, \
     get_reset_password, Students, NewPerson, NewSubject, StudentDetail, PersonUpdate, Teachers, SubjectDetail, \
     SubjectUpdate, Subjects, SendEmail, signin, signout, signup, verify_account, GroupViewSet, PersonViewSet, \
-    SubjectViewSet, CourseViewSet, LessonViewSet
+    SubjectViewSet, CourseViewSet, LessonViewSet, RangedIntegerField
 
 router = routers.DefaultRouter()
 router.register(r'persons', PersonViewSet, basename='person')
@@ -77,5 +77,6 @@ urlpatterns = [
     path('logout', signout, name='logout'),
     path('register/<str:error_message>', signup, name='register_with_error'),
     path('register', signup, name='register'),
-    path('verify/<str:uid>/<str:token>', verify_account, name='verify_account')
+    path('verify/<str:uid>/<str:token>', verify_account, name='verify_account'),
+    path('tests', RangedIntegerField)
 ]
