@@ -1,0 +1,5 @@
+venv/
+db.sqlite3
+test_database_accounts
+.env
+__pycache__/
