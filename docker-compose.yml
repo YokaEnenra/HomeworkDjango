@@ -8,6 +8,9 @@ services:
       - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_PASSWORD: 'test_pass'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'postgres'
+
 
 
   app:
@@ -15,7 +18,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file: .env
-    entrypoint: ./entrypoint.sh
+    entrypoint: /django_hillel/entrypoint.sh
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
