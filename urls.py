@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.template.defaulttags import url
 from django.urls import path, include, re_path
 from rest_framework import routers, permissions
 from drf_yasg.views import get_schema_view
@@ -79,5 +78,5 @@ urlpatterns = [
     path('register/<str:error_message>', signup, name='register_with_error'),
     path('register', signup, name='register'),
     path('verify/<str:uid>/<str:token>', verify_account, name='verify_account'),
-    url(r'^ht/', include('health_check.urls')),
+    path(r'ht/', include('health_check.urls')),
 ]
