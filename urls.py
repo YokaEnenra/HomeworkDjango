@@ -77,5 +77,6 @@ urlpatterns = [
     path('logout', signout, name='logout'),
     path('register/<str:error_message>', signup, name='register_with_error'),
     path('register', signup, name='register'),
-    path('verify/<str:uid>/<str:token>', verify_account, name='verify_account')
+    path('verify/<str:uid>/<str:token>', verify_account, name='verify_account'),
+    path(r'ht/', include('health_check.urls')),
 ]

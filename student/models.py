@@ -28,14 +28,14 @@ class Group(Model):
     edu_program = CharField(max_length=100)
     # Many groups to one course
     course = ForeignKey('Course', on_delete=RESTRICT, null=True)
-    subjects = ManyToManyField('Subject', null=True)
+    subjects = ManyToManyField('Subject')
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)
 
 
 class Subject(Model):
     name = CharField(max_length=30, default=None)
-    courses = ManyToManyField('Course', null=True)
+    courses = ManyToManyField('Course')
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)
 
@@ -52,7 +52,7 @@ class Lesson(Model):
     subject = ForeignKey('Subject', on_delete=RESTRICT, null=True)
     teacher = OneToOneField('Person', on_delete=RESTRICT, null=True)
     theme = CharField(max_length=100)
-    groups = ManyToManyField('Group', null=True)
+    groups = ManyToManyField('Group')
     date_of_lesson = DateTimeField(null=True)
     creation_time = DateTimeField(auto_now_add=True)
     update_time = DateTimeField(auto_now=True)

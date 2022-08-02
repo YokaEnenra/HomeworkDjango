@@ -13,11 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -48,6 +45,18 @@ INSTALLED_APPS = [
     'crispy_forms',
     #
     'student.apps.StudentConfig',
+    #
+    'health_check',  # required
+    'health_check.db',  # stock Django health checkers
+    'health_check.cache',
+    'health_check.storage',
+    'health_check.contrib.migrations',
+    # 'health_check.contrib.celery',  # requires celery
+    # 'health_check.contrib.celery_ping',  # requires celery
+    # 'health_check.contrib.psutil',  # disk and memory utilization; requires psutil
+    # 'health_check.contrib.s3boto3_storage',  # requires boto3 and S3BotoStorage backend
+    # 'health_check.contrib.rabbitmq',  # requires RabbitMQ broker
+    # 'health_check.contrib.redis',
 ]
 
 REST_FRAMEWORK = {
@@ -55,7 +64,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -95,10 +103,15 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'test_pass',
+        'HOST': 'postgres',
+        'PORT': '5432',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

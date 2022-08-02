@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:14.4-alpine
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 'test_pass'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'postgres'
+
+
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    entrypoint: /django_hillel/entrypoint.sh
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./:/django_hillel
+    depends_on:
+      - postgres
